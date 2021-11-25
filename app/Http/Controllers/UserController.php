@@ -21,7 +21,6 @@ class UserController extends Controller
                 $user = new User();
 
                 if (!$this->checkemailrepeat($data->email)) {
-
                     if (filter_var($data->email, FILTER_VALIDATE_EMAIL)) {
                         $user->name = $data->name;
                         $user->email = $data->email;
@@ -65,6 +64,9 @@ class UserController extends Controller
                 if ($user) {
                     if ($request->has('unsubscribe') && $request->input('unsubscribe') == "si") {
                         $user->active = 0;
+                        $response['msg'] = "Usuario modificado con id " . $user->id;
+                    } else if (isset($data->email)) {
+                        $response['msg'] = "No se puede modificar el email";
                     } else {
                         if (isset($data->name))
                             $user->name = $data->name;
@@ -72,10 +74,9 @@ class UserController extends Controller
                             $user->password = $data->password;
                         if (isset($data->photo))
                             $user->photo = $data->photo;
+                        $response['msg'] = "Usuario modificado con id " . $user->id;
                     }
-
                     $user->save();
-                    $response['msg'] = "Usuario modificado con id " . $user->id;
                 } else {
                     $response['msg'] = "El usuario con id " . $id . " no existe";
                 }

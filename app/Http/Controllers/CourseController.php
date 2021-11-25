@@ -56,7 +56,6 @@ class CourseController extends Controller
             if ($request->has('title') && $request->input('title'))
                 $course = $course->where('courses.title', 'like', '%' . $request->input('title') . '%');
 
-
             $response['msg'] = $course->get();
         } catch (\Exception $e) {
             $response['msg'] = "Ha ocurrido un error " . $e->getMessage();
@@ -87,6 +86,8 @@ class CourseController extends Controller
                         ->get();
 
                     $response["msg"] = $videos;
+                } else {
+                    $response['msg'] = "No puede ver videos de un curso que no ha comprado";
                 }
             } else {
                 $response['msg'] = "ID Curso no introducido";

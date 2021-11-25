@@ -24,7 +24,7 @@ class UsersVideoController extends Controller
             $videos = Video::find($video_id);
 
             if (CourseController::checkUserCourse($user_id, $videos->course_id)) {
-                $videos = Video::find($video_id)->get();
+                $videos = Video::where('id', $video_id)->get();
 
                 $uservideo_videoid = Users_video::where('video_id', $video_id)->value('video_id');
 
