@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
     Route::put('/register', [UserController::class, 'register']);
+    Route::post('/modify/{id}', [UserController::class, 'modify']);
 });
