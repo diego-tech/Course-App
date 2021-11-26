@@ -7,8 +7,6 @@ use App\Models\Users_video;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CourseController;
-use App\Models\Users_course;
-use Illuminate\Support\Facades\DB;
 
 class UsersVideoController extends Controller
 {
@@ -26,9 +24,9 @@ class UsersVideoController extends Controller
             if (CourseController::checkUserCourse($user_id, $videos->course_id)) {
                 $videos = Video::where('id', $video_id)->get();
 
-                $uservideo_videoid = Users_video::where('video_id', $video_id)->value('video_id');
+                $register = Users_video::where('user_id', $user_id)->where('video_id', $video_id)->value('id');
 
-                if ($uservideo_videoid != $video_id) {
+                if (!$register) {
                     $uservideo = new Users_video();
                     $uservideo->user_id = $user->id;
                     $uservideo->video_id = $video_id;
