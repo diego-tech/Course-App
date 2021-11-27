@@ -17,7 +17,6 @@ class UsersVideoController extends Controller
         try {
             $user_id = User::where('id', $user_id)->value('id');
             $user = User::find($user_id);
-
             $video_id = $request->input('video_id');
             $videos = Video::find($video_id);
 

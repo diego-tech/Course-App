@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Users_video;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,7 +75,6 @@ class CourseController extends Controller
         try {
             if ($request->has('course_id')) {
                 if ($this->checkUserCourse($user_id, $request->input('course_id'))) {
-                    // FIXME: It doesn't show all videos, only videos viewed by this user.It does not show all videos, only videos viewed by this user.
                     $videos = DB::table('courses')
                         ->join('videos', 'videos.course_id', '=', 'courses.id')
                         ->leftJoin('users_videos', 'users_videos.video_id', '=', 'videos.id')
@@ -84,10 +84,11 @@ class CourseController extends Controller
                             'videos.video_thumbnail as Miniatura de Video',
                             'users_videos.created_at as Visto'
                         )
-                        ->where('users.id', $user_id)
+                        ->where('users_videos.user_id', $user_id)
+                        ->whereNotNull('users_videos.created_at')
+                        ->orWhereNull('users_videos.created_at')
                         ->where('courses.id', $request->input('course_id'))
                         ->get();
-
                     $response["msg"] = $videos;
                 } else {
                     $response['msg'] = "No puede ver videos de un curso que no ha comprado";
