@@ -75,21 +75,30 @@ class CourseController extends Controller
         try {
             if ($request->has('course_id')) {
                 if ($this->checkUserCourse($user_id, $request->input('course_id'))) {
-                    $videos = DB::table('courses')
-                        ->join('videos', 'videos.course_id', '=', 'courses.id')
-                        ->leftJoin('users_videos', 'users_videos.video_id', '=', 'videos.id')
-                        ->leftJoin('users', 'users_videos.user_id', '=', 'users.id')
-                        ->select(
-                            'videos.title as Nombre del Vídeo',
-                            'videos.video_thumbnail as Miniatura de Video',
-                            'users_videos.created_at as Visto'
-                        )
-                        ->where('users_videos.user_id', $user_id)
-                        ->whereNotNull('users_videos.created_at')
-                        ->orWhereNull('users_videos.created_at')
-                        ->where('courses.id', $request->input('course_id'))
+                    $videos = Video::where('course_id', $request->input('course_id'))->get();
+
+                    $query_response = ["Titulo Video" => "", "Foto Video" => "", "Visto" => ""];
+
+                    $videos_users = Users_video::join('videos', 'video_id', 'videos.id')
+                        ->where('user_id', $user_id)
+                        ->where('videos.course_id', $request->input('course_id'))
                         ->get();
-                    $response["msg"] = $videos;
+
+                    foreach ($videos as $video) {
+                        $query_response["Titulo Video"] = $video->title;
+                        $query_response["Foto Video"] = $video->video_thumbnail;
+                        foreach ($videos_users as $video_user) {
+                            if ($video->id == $video_user->video_id) {
+                                $query_response["Visto"] = "true";
+                                break;
+                            } else {
+                                $query_response["Visto"] = "NULL";
+                            }
+                        }
+
+                        $result[] = $query_response;
+                    }
+                    $response["msg"] = $result;
                 } else {
                     $response['msg'] = "No puede ver videos de un curso que no ha comprado";
                 }

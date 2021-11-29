@@ -43,13 +43,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
-
-            DB::table('users_courses')->insert([
-                'user_id' => rand(1, $i),
-                'course_id' => rand(1, $i),
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
         }
     }
 }
