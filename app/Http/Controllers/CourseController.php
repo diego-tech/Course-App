@@ -100,7 +100,7 @@ class CourseController extends Controller
                     }
                     $response["msg"] = $result;
                 } else {
-                    $response['msg'] = "No puede ver videos de un curso que no ha comprado";
+                    $response['msg'] = "No ha comprado este curso.";
                 }
             } else {
                 $response['msg'] = "ID Curso no introducido";
