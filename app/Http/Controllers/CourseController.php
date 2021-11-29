@@ -89,7 +89,7 @@ class CourseController extends Controller
                         $query_response["Foto Video"] = $video->video_thumbnail;
                         foreach ($videos_users as $video_user) {
                             if ($video->id == $video_user->video_id) {
-                                $query_response["Visto"] = "true";
+                                $query_response["Visto"] = $video_user->created_at;
                                 break;
                             } else {
                                 $query_response["Visto"] = "NULL";
